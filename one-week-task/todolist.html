@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .wrapper {
+            margin-top: 16px;
+        }
+
+
+        .container {
+            width: 1200px;
+            margin: auto;
+        }
+
+        .input-block {
+            margin-bottom: 16px;
+        }
+
+        .input-span {
+            width: 10%;
+            padding: 6px 12px;
+            background-color: #E9ECEF;
+            line-height: 1.5;
+            color: #495057;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+
+        #input {
+            width: 85%;
+            border: 1px solid #ced4da;
+            line-height: 1.5;
+            padding: 6px 12px;
+            border-radius: 0.25rem;
+            color: #333;
+        }
+
+        #submit {
+            width: 5%;
+            border: 1px solid #ced4da;
+            line-height: 1.5;
+            padding: 6px 12px;
+            border-radius: 0.25rem;
+            color: #fff;
+            background-color: #0062cc;
+            border-color: #005cbf;
+        }
+
+        .foot-block {
+            padding: 12px 20px;
+            border: 1px solid #ced4da;
+            line-height: 1.5;
+            padding: 6px 12px;
+            border-radius: 0.25rem;
+            color: #E9ECEF;
+            background-color: #E9ECEF;
+            position: relative;
+        }
+
+        #list-block {
+
+            position: relative;
+        }
+
+        .foot-span {
+            line-height: 1.5;
+            color: #495057;
+        }
+
+        .clear-anchor {
+            position: absolute;
+            right: 30px;
+            color: #0062cc;
+            text-decoration: none;
+        }
+
+     
+           .div-item {
+            padding: 12px 20px;
+            border: 1px solid #ced4da;
+            line-height: 1.5;
+            padding: 6px 12px;
+            border-radius: 0.25rem;
+            color: #495057;
+           }
+           .btn-item{
+              
+              position: absolute;
+              right: 10px;
+              border: 0;
+              line-height: 1.5;
+
+           }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="input-block">
+                <span class="input-span">待辦事項</span>
+                <input type="text" id='input' placeholder="準備要做的任務"><button id="submit">新增</button>
+            </div>
+            <div id="list-block"> 
+            </div>
+            <div class="foot-block">
+                <span class="foot-span">還有
+                    <span id="spanCount">0</span>
+                    筆任務
+                </span>
+                <a href="" class="clear-anchor">清除所有任務</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+var input = document.querySelector('#input');
+        var submit = document.querySelector('#submit');
+        var list = document.querySelector('#list-block');
+        var count = document.querySelector('#spanCount');
+        var clearAnchor = document.querySelector(".clear-anchor");
+        submit.addEventListener('click', updateData);
+        clearAnchor.addEventListener('click',clearAll);
+        var data = [];
+       
+        function updateData() {
+            if (input.value == "") return;
+          data.push({text:input.value});
+          input.value="";
+            render();
+        }
+        function render() {
+
+            var string = '';
+            data.forEach((item, index) => {
+                console.log("foreach");
+                string += `<div class="div-item">
+            ${item.text}<button class='btn-item' data-id=${index}'>X</button></div>`;
+
+            });
+            list.innerHTML = string;
+
+            var btns = document.querySelectorAll('.btn-item');
+            btns.forEach((item) => {
+                item.addEventListener('click', delItem_data);
+            });
+            count.innerHTML = btns.length;
+
+        }
+        function delItem_data(event) {
+            console.log(event.target.parentNode.remove());
+            data.splice(event.target.dataset.id, 1);
+            render();
+        }
+
+        function clearAll()
+        {
+            data =[];
+
+            
+            render();
+            return false;
+
+        }
+        render();
+
+    </script>
+
+
+</body>
+
+</html>
